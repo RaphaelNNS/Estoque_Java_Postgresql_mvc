@@ -5,24 +5,14 @@ import domain.Cliente;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutodDaoList implements IProdutoDao {
+public class ClienteDaoList implements IClienteDao {
 
     List<Cliente> clienteList = new ArrayList<>();
 
     @Override
     public void cadastrarProduto(Cliente cliente) {
-        clienteList.add(cliente);
-    }
+        clienteList.add(cliente);}
 
-    @Override
-    public void atualizarProduto() {
-        return;
-    }
-
-    @Override
-    public Cliente buscarProduto() {
-        return null;
-    }
 
     @Override
     public List<Cliente> buscarTodos() {
@@ -30,7 +20,19 @@ public class ProdutodDaoList implements IProdutoDao {
     }
 
     @Override
-    public void excluirPoduto() {
+    public void excluirPoduto(Integer indexOfElement) {
+        clienteList.remove(indexOfElement);
+    }
 
+    @Override
+    public Cliente buscarCliente(Integer indexOfElement) {
+
+        return clienteList.get(indexOfElement);
+    }
+
+    @Override
+    public Integer length() {
+
+        return clienteList.size();
     }
 }

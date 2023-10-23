@@ -2,12 +2,13 @@ package dao;
 
 import domain.Cliente;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public interface IProdutoDao {
-    void cadastrarProduto(Cliente cliente);
-    void atualizarProduto();
-    Cliente buscarProduto();
+public interface IClienteDao {
+    void cadastrarProduto(Cliente cliente) throws SQLException;
     List<Cliente> buscarTodos();
-    void excluirPoduto();
+    void excluirPoduto(Integer indexOfElement);
+    Cliente buscarCliente(Integer indexOfElement);
+    Integer length();
 }
