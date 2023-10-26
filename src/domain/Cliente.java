@@ -4,21 +4,31 @@ public class Cliente {
 
     private long id;
     private String nome;
-    private String CNPJ;
     private String endereco;
     private String cidade;
     private String estado;
     private String telefone;
+    private String  cpf;
 
     public Cliente() {
 
     }
-    public Cliente(String nome,String endereco, String cidade, String estado, String telefone) {
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Cliente(String nome, String endereco, String cidade, String estado, String telefone, String  cpf) {
         this.nome = nome;
         this.endereco = endereco;
         this.cidade = cidade;
         this.estado = estado;
         this.telefone = telefone;
+        this.cpf = cpf;
     }
     public String getNome() {
         return nome;
@@ -26,12 +36,7 @@ public class Cliente {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getCNPJ() {
-        return CNPJ;
-    }
-    public void setCNPJ(String cNPJ) {
-        CNPJ = cNPJ;
-    }
+
     public String getEndereco() {
         return endereco;
     }
@@ -66,12 +71,12 @@ public class Cliente {
     }
 
     public String toString() {
-        return "\nNome da empresa: "+this.nome
-                + "\nCNPJ: "+this.CNPJ+
+        return "\nNome da empresa: "+this.nome+
                 "\nEndereço: "+this.endereco+
                 "\nCidade: "+this.cidade+
                 "\nEstado: "+this.estado+
-                "\nTelefone: "+this.telefone;
+                "\nTelefone: "+this.telefone+
+                "\nCPF: " +this.cpf;
     }
 
 }

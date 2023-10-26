@@ -6,9 +6,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IClienteDao {
-    void cadastrarProduto(Cliente cliente) throws SQLException;
-    List<Cliente> buscarTodos();
-    void excluirPoduto(Integer indexOfElement);
-    Cliente buscarCliente(Integer indexOfElement);
+
+    public Integer cadastrar(Cliente cliente) throws Exception;
+
+    public Integer atualizar(Cliente cliente) throws Exception;
+
+    public Cliente buscar(String codigo) throws Exception;
+
+    public List<Cliente> buscarTodos() throws Exception;
+
+    public Integer excluir(Cliente cliente) throws Exception;
+
     Integer length();
 }

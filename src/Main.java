@@ -13,10 +13,11 @@ public class Main {
         System.out.println("\n****Menu****");
         System.out.println("\n1- Cadastrar");
         System.out.println("\n2- Exibir todas as empresas");
-        System.out.println("\n3- Finalizar\n");
+        System.out.println("\n3- Buscar cliente por CPF");
+        System.out.println("\n4- Finalizar\n");
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws Exception {
         IClienteDao dao = new ClienteDaoDB();
         Scanner sc = new Scanner(System.in);
         int op;
@@ -27,22 +28,25 @@ public class Main {
             sc.nextLine();
             switch (op) {
                 case 1:{
-                    System.out.println("Nome da empresa: ");
+                    System.out.println("Nome do cliente: ");
                     String nome = sc.nextLine();
                     sc.nextLine();
-                    System.out.println("Endereço da empresa: ");
+                    System.out.println("Endereço do cliente: ");
                     String endereco = sc.nextLine();
                     sc.nextLine();
-                    System.out.println("Estado da empresa: ");
+                    System.out.println("Estado do cliente ");
                     String estado = sc.nextLine();
                     sc.nextLine();
-                    System.out.println("Cidade da empresa: ");
+                    System.out.println("Cidade do cliente: ");
                     String cidade = sc.nextLine();
                     sc.nextLine();
-                    System.out.println("Telefone da empresa: ");
+                    System.out.println("Telefone do cliente: ");
                     String telefone = sc.nextLine();
                     sc.nextLine();
-                    dao.cadastrarProduto(new Cliente(nome, endereco, estado, cidade, telefone));
+                    System.out.println("Telefone do cliente: ");
+                    String cpf = sc.nextLine();
+                    sc.nextLine();
+                    dao.cadastrar(new Cliente(nome, endereco, estado, cidade, telefone, cpf));
                     break;
                 }
                 case 2:{
@@ -56,6 +60,16 @@ public class Main {
                     break;
                 }
                 case 3:{
+                    System.out.println("Digite o CPF: ");
+                    String codigo = sc.nextLine();
+                    sc.nextLine();
+                    Cliente cliente = dao.buscar(codigo);
+                    if(cliente != null){
+                        System.out.println(cliente);
+                    }else System.out.println("Nao ha clientes registrados com este CPF");
+                    break;
+                }
+                case 4:{
                     System.out.println("\nEncerrando o programa...");
                     break;
                 }
@@ -64,7 +78,7 @@ public class Main {
                     break;
                 }
             }
-        }while(op!=3);
+        }while(op!=4);
 
     }
 

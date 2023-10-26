@@ -10,8 +10,17 @@ public class ClienteDaoList implements IClienteDao {
     List<Cliente> clienteList = new ArrayList<>();
 
     @Override
-    public void cadastrarProduto(Cliente cliente) {
-        clienteList.add(cliente);}
+    public Integer cadastrar(Cliente cliente) {
+        clienteList.add(cliente);
+        return 1;
+    }
+
+    @Override
+    public Integer atualizar(Cliente cliente) throws Exception {
+        return null;
+    }
+
+
 
 
     @Override
@@ -20,14 +29,19 @@ public class ClienteDaoList implements IClienteDao {
     }
 
     @Override
-    public void excluirPoduto(Integer indexOfElement) {
-        clienteList.remove(indexOfElement);
+    public Integer excluir(Cliente cliente) throws Exception {
+        return null;
     }
 
-    @Override
-    public Cliente buscarCliente(Integer indexOfElement) {
 
-        return clienteList.get(indexOfElement);
+    @Override
+    public Cliente buscar(String codigo) {
+        Cliente cliente = null;
+        Integer index = 0;
+        for (Cliente c : clienteList){
+            if(c.getCpf().equals(codigo)) return c;
+        }
+        return null;
     }
 
     @Override
