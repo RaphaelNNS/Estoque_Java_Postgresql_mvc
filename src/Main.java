@@ -87,8 +87,56 @@ public class Main {
         sc.nextLine();
         Cliente cliente = dao.buscar(codigo);
         if(cliente != null){
+            telaCliente(sc, dao, cliente);
             System.out.println(cliente);
         }else System.out.println("Nao ha clientes registrados com este CPF");
+    }
+
+    private static void telaCliente(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+        String op = null;
+        do {
+            exibirMenuCliente();
+            System.out.println(cliente);
+            op = sc.nextLine();
+            sc.nextLine();
+            switch (op) {
+                case "1":
+                    telaModificarDados(sc, dao, cliente);
+                    System.out.println("tela de modificação");
+                    break;
+                case "2":
+                    telaExcluirClientes(sc, dao, cliente);
+                    System.out.println("tela de excluir clientes");
+                    break;
+                case "3":
+                    System.out.println("Opção 3 selecionada");
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+            }
+
+        }while (!op.equals("3"));
+    }
+
+    private static void telaExcluirClientes(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+        String op = null;
+        System.out.println(("Tem certeza que quer exlcuir este cliente?").toUpperCase());
+        System.out.println("[1 - SIM / 2 - NAO]");
+        op = sc.nextLine();
+        sc.nextLine();
+        if (op.equals("1")) dao.excluir(cliente);
+        else System.out.println("EXCLUSAO CANCELADA");
+    }
+
+    private static void telaModificarDados(Scanner sc, IClienteDao dao, Cliente cliente) {
+        System.out.println("Qual");
+    }
+
+    private static void exibirMenuCliente() {
+        System.out.println("\n**** MenuCliente ****");
+        System.out.println("\n1- Modificar dados");
+        System.out.println("\n2- Excluir cliente");
+        System.out.println("\n3- Voltar");
     }
 
 }
