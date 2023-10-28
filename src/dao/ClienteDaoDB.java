@@ -11,24 +11,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteDaoDB implements IClienteDao {
+    private final String T_CLIENTES = "tb_clientes";
+    private final String C_ID = "clienteid";
+    private final String C_NOME = "clientenome";
+    private final String C_ENDERECO = "clienteendereco";
+    private final String C_CIDADE = "clientecidade";
+    private final String C_ESTADO = "clienteestado";
+    private final String C_TELEFONE = "clientetelefone";
+    private final String C_CPF = "clientecpf";
     /*
-    [ ]cadastrar produto
-    [ ]get cadastrar query
+    [X]cadastrar produto
+    [X]get cadastrar query
     [X]buscar todos
     [X]buscar todos query
     [X]buscar produto
     [X]buscar produto query
-    [ ]excluir produto
-    [ ]excluir produto query
+    [X]excluir produto
+    [X]excluir produto query
     [ ]atualizar produto
     [ ]atualizar produtos query
+    [ ]criar tela de atualizar ou excluir na pesquisa por cpf
+    [ ]criar tela de excluir
+    [ ]criar tela de atualizar
      */
 
 
     @Override
     public Integer cadastrar(Cliente cliente) throws SQLException {
+        Connection connection = ConnectionFactory.getConnection();
+        String sql =  getSqlCadastrar();
+        PreparedStatement stm = connection.prepareStatement(sql);
+        adicionarParametrosCadastrar(stm, cliente);
+        return stm.executeUpdate();
+    }
 
-        return null;
+    private String getSqlCadastrar() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO " + T_CLIENTES + " (" + C_NOME + ", "
+            + C_ENDERECO + ", " + C_ESTADO + ", " + C_CIDADE + ", "
+            + C_TELEFONE + ", " + C_CPF + ")");
+        sb.append(" VALUES (?, ?, ?, ?, ?, ?)");
+        return sb.toString();
+    }
+
+    private void adicionarParametrosCadastrar(PreparedStatement stm, Cliente cliente) throws SQLException {
+        stm.setString(1, cliente.getNome());
+        stm.setString(2, cliente.getEndereco());
+        stm.setString(3, cliente.getEstado());
+        stm.setString(4, cliente.getCidade());
+        stm.setString(5, cliente.getTelefone());
+        stm.setString(6, cliente.getCpf());
+    }
+
+    private String getSqlUpdate() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE tb_clientes ");
+        sb.append("SET " + C_NOME + " = ?, "
+                + C_ENDERECO + " = ?, " + C_CIDADE + " = ?, "
+                + C_ESTADO + " = ?, " + C_TELEFONE + " = ?, "
+                + C_CPF + " = ? ");
+        sb.append("WHERE " + C_ID + " = ?");
+        return sb.toString();
     }
 
     @Override
@@ -53,13 +96,13 @@ public class ClienteDaoDB implements IClienteDao {
             while (result.next()){
                 cliente = new Cliente();
 
-                long id = result.getLong("clienteid");
-                String nome = result.getString("clientenome");
-                String endereco = result.getString("clienteendereco");
-                String cidade = result.getString("clientecidade");
-                String estado = result.getString("clienteestado");
-                String telefone = result.getString("clientetelefone");
-                String cpf =  result.getString("clientecpf");
+                long id = result.getLong(C_ID);
+                String nome = result.getString(C_NOME);
+                String endereco = result.getString(C_ENDERECO);
+                String cidade = result.getString(C_CIDADE);
+                String estado = result.getString(C_ESTADO);
+                String telefone = result.getString(C_TELEFONE);
+                String cpf =  result.getString(C_CPF);
 
                 cliente.setId(id);
                 cliente.setNome(nome);
