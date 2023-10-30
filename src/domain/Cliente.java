@@ -71,7 +71,7 @@ public class Cliente {
     }
 
     public String toString() {
-        return "\nNome da empresa: "+this.nome+
+        return "\nNome : "+this.nome+
                 "\nEndereço: "+this.endereco+
                 "\nCidade: "+this.cidade+
                 "\nEstado: "+this.estado+

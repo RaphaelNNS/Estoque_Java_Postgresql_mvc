@@ -28,21 +28,29 @@ public class ClienteDaoDB implements IClienteDao {
     [X]buscar produto query
     [X]excluir produto
     [X]excluir produto query
-    [ ]atualizar produto
-    [ ]atualizar produtos query
-    [ ]criar tela de atualizar ou excluir na pesquisa por cpf
-    [ ]criar tela de excluir
-    [ ]criar tela de atualizar
+    [X]atualizar produto
+    [X]atualizar produtos query
+    [X]criar tela de atualizar ou excluir na pesquisa por cpf
+    [X]criar tela de excluir
+    [X]criar tela de atualizar
      */
 
 
     @Override
     public Integer cadastrar(Cliente cliente) throws SQLException {
         Connection connection = ConnectionFactory.getConnection();
-        String sql =  getSqlCadastrar();
+        String sql = getSqlCadastrar();
         PreparedStatement stm = connection.prepareStatement(sql);
-        adicionarParametrosCadastrar(stm, cliente);
-        return stm.executeUpdate();
+        try {
+            adicionarParametrosCadastrar(stm, cliente);
+            return stm.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnection(connection, stm, null);
+        }
+
+
     }
 
     private String getSqlCadastrar() {
@@ -76,7 +84,35 @@ public class ClienteDaoDB implements IClienteDao {
 
     @Override
     public Integer atualizar(Cliente cliente) throws Exception {
-        return null;
+        Connection connection = ConnectionFactory.getConnection();
+        String sql = getSqlAtualizar();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        try {
+            adicionarParametrosAtualizar(preparedStatement, cliente);
+            return preparedStatement.executeUpdate();
+        }catch (Exception e){
+            throw e;
+        }finally {
+            closeConnection(connection, preparedStatement, null);
+        }
+    }
+
+    private void adicionarParametrosAtualizar(PreparedStatement preparedStatement, Cliente cliente) throws SQLException {
+        preparedStatement.setString(1, cliente.getNome());
+        preparedStatement.setString(2, cliente.getEndereco());
+        preparedStatement.setString(3, cliente.getCidade());
+        preparedStatement.setString(4, cliente.getEstado());
+        preparedStatement.setString(5, cliente.getTelefone());
+        preparedStatement.setString(6, cliente.getCpf());
+        preparedStatement.setLong(7, cliente.getId());
+    }
+
+    private String getSqlAtualizar() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE " + T_CLIENTES);
+        sb.append(" SET " + C_NOME + " = ?, " + C_ENDERECO+ " = ?, " + C_CIDADE + " = ?, " + C_ESTADO + " = ?, " + C_TELEFONE+ " = ?, " + C_CPF+ " = ? " );
+        sb.append("WHERE " + C_ID + " = ?");
+        return sb.toString();
     }
 
     @Override
@@ -151,8 +187,8 @@ public class ClienteDaoDB implements IClienteDao {
         try {
             connection = ConnectionFactory.getConnection();
             String sql = getSqlDelete();
-            adicionarParametrosDelete(stm, cliente);
             stm = connection.prepareStatement(sql);
+            adicionarParametrosDelete(stm, cliente);
             return stm.executeUpdate();
         } catch (Exception e) {
             throw e;

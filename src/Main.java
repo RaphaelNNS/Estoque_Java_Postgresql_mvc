@@ -102,14 +102,11 @@ public class Main {
             switch (op) {
                 case "1":
                     telaModificarDados(sc, dao, cliente);
-                    System.out.println("tela de modificação");
                     break;
                 case "2":
                     telaExcluirClientes(sc, dao, cliente);
-                    System.out.println("tela de excluir clientes");
                     break;
                 case "3":
-                    System.out.println("Opção 3 selecionada");
                     break;
                 default:
                     System.out.println("Opção inválida");
@@ -124,12 +121,65 @@ public class Main {
         System.out.println("[1 - SIM / 2 - NAO]");
         op = sc.nextLine();
         sc.nextLine();
-        if (op.equals("1")) dao.excluir(cliente);
+        if (op.equals("1")) {
+            dao.excluir(cliente);
+            return;
+        }
         else System.out.println("EXCLUSAO CANCELADA");
     }
 
-    private static void telaModificarDados(Scanner sc, IClienteDao dao, Cliente cliente) {
-        System.out.println("Qual");
+    private static void telaModificarDados(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+        String op;
+        do {
+            exibirMenuModificacao();
+            op = sc.nextLine();
+            sc.nextLine();
+            switch (op) {
+                case "1":
+                    System.out.println("Digite o nome do cliente: ");
+                    cliente.setNome(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "2":
+                    System.out.println("Digite o endereco do cliente: ");
+                    cliente.setEndereco(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "3":
+                    System.out.println("Digite a cidade do cliente: ");
+                    cliente.setCidade(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "4":
+                    System.out.println("Digite o estado do cliente: ");
+                    cliente.setEstado(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "5":
+                    System.out.println("Digite o telefone do cliente: ");
+                    cliente.setTelefone(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "6":
+                    System.out.println("Digite o CPF do cliente: ");
+                    cliente.setCpf(sc.nextLine());
+                    sc.nextLine();
+                    break;
+                case "7":
+                    System.out.println("Dados do cliente foram atualizados");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        } while (!op.equals("7"));
+
+
+        dao.atualizar(cliente);
+    }
+
+    private static void exibirMenuModificacao() {
+        System.out.println("Qual atributo deseja modificar do cliente?");
+        System.out.println("1 - nome\n2 - endereco\n3 - cidade\n4 - estado\n5 - telefone\n6 - CPF\n                  7 - salvar");
     }
 
     private static void exibirMenuCliente() {
