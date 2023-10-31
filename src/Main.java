@@ -72,7 +72,9 @@ public class Main {
 
     private static void telaExibirTodos(IClienteDao dao) throws Exception {
         if (dao.length() > 0) {
-            System.out.println(dao.buscarTodos());
+            for (Cliente c: dao.buscarTodos()){
+                System.out.println(c);
+            }
             System.out.println("\n");
         }
         else {

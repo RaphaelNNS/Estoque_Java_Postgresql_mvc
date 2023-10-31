@@ -8,15 +8,23 @@ import java.util.List;
 public class ClienteDaoList implements IClienteDao {
 
     List<Cliente> clienteList = new ArrayList<>();
+    Integer idCount = 0;
 
     @Override
     public Integer cadastrar(Cliente cliente) {
+        cliente.setId(idCount);
         clienteList.add(cliente);
+        idCount++;
         return 1;
     }
 
     @Override
     public Integer atualizar(Cliente cliente) throws Exception {
+        for (Cliente c : clienteList){
+            if (c.getId() == cliente.getId()){
+                c = cliente;
+            }
+        }
         return null;
     }
 
@@ -30,7 +38,8 @@ public class ClienteDaoList implements IClienteDao {
 
     @Override
     public Integer excluir(Cliente cliente) throws Exception {
-        return null;
+        clienteList.remove(cliente);
+        return 1;
     }
 
 

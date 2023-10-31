@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class Cliente {
 
     private long id;
@@ -70,13 +72,26 @@ public class Cliente {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return id == cliente.id && Objects.equals(nome, cliente.nome) && Objects.equals(endereco, cliente.endereco) && Objects.equals(cidade, cliente.cidade) && Objects.equals(estado, cliente.estado) && Objects.equals(telefone, cliente.telefone) && Objects.equals(cpf, cliente.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, endereco, cidade, estado, telefone, cpf);
+    }
+
     public String toString() {
         return "\nNome : "+this.nome+
                 "\nEndereço: "+this.endereco+
                 "\nCidade: "+this.cidade+
                 "\nEstado: "+this.estado+
                 "\nTelefone: "+this.telefone+
-                "\nCPF: " +this.cpf;
+                "\nCPF: " +this.cpf+"\n";
     }
 
 }
