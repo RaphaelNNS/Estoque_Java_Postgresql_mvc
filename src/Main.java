@@ -1,4 +1,5 @@
 import dao.ClienteDaoDB;
+import dao.ClienteDaoList;
 import dao.IClienteDao;
 import domain.Cliente;
 
@@ -6,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        IClienteDao dao = new ClienteDaoDB();
+        IClienteDao dao = new ClienteDaoList();
         Scanner sc = new Scanner(System.in);
         String op;
         do {

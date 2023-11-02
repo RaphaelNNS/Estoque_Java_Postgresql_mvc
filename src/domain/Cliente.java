@@ -77,7 +77,7 @@ public class Cliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return id == cliente.id && Objects.equals(nome, cliente.nome) && Objects.equals(endereco, cliente.endereco) && Objects.equals(cidade, cliente.cidade) && Objects.equals(estado, cliente.estado) && Objects.equals(telefone, cliente.telefone) && Objects.equals(cpf, cliente.cpf);
+        return  Objects.equals(nome, cliente.nome) && Objects.equals(endereco, cliente.endereco) && Objects.equals(cidade, cliente.cidade) && Objects.equals(estado, cliente.estado) && Objects.equals(telefone, cliente.telefone) && Objects.equals(cpf, cliente.cpf);
     }
 
     @Override
