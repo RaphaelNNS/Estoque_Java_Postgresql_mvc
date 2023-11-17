@@ -110,7 +110,10 @@ public class ClienteDaoDB implements IClienteDao {
     private String getSqlAtualizar() {
         StringBuilder sb = new StringBuilder();
         sb.append("UPDATE " + T_CLIENTES);
-        sb.append(" SET " + C_NOME + " = ?, " + C_ENDERECO+ " = ?, " + C_CIDADE + " = ?, " + C_ESTADO + " = ?, " + C_TELEFONE+ " = ?, " + C_CPF+ " = ? " );
+        sb.append(" SET " +
+                C_NOME + " = ?, " + C_ENDERECO + " = ?, " +
+                C_CIDADE + " = ?, " + C_ESTADO + " = ?, " +
+                C_TELEFONE+ " = ?, " + C_CPF + " = ? " );
         sb.append("WHERE " + C_ID + " = ?");
         return sb.toString();
     }
