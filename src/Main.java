@@ -1,77 +1,90 @@
+import dao.ClienteDaoDB;
 import dao.ClienteDaoList;
 import dao.IClienteDao;
 import domain.Cliente;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        IClienteDao dao = new ClienteDaoList();
+    public static void main(String[] args){
+        IClienteDao dao = new ClienteDaoDB();
         String op;
         do {
-            exibirMenu();
-            System.out.println("\nO que deseja fazer?");
             op = exibirMenu();
             switch (op) {
-                case "1":{
+                case "0":{
                     telaCadastro(dao);
                     break;
                 }
-                case "2":{
+                case "1":{
                     telaExibirTodos(dao);
+                    System.out.println("tela exibir todos");
+                    //telaExibirTodos(dao);
                     break;
                 }
-                case "3":{
-                    telaBuscarClienteCpf(dao);
+                case "2":{
+                    System.out.println("tela buscar cliente por cpf");
+                    //telaBuscarClienteCpf(dao);
                     break;
                 }
-                case "4":{
+                case "3":
+                case "-1": {
                     System.out.println("\nEncerrando o programa...");
                     break;
                 }
                 default:{
-                    System.out.println("\nOpção inválida!");
+                    System.out.println("\nCRIAR POP UP DE ERRO!");
                     break;
                 }
             }
-        }while(!op.equals("4"));
-
+        }while(!op.equals("3") && !op.equals("-1"));
     }
 
     public static String exibirMenu() {
-        String[] options = {"Cadastrar", "Exibir todoss os clientes", "Buscar cliente por CPF"," Finalizar"};
+        String[] options = {"Cadastrar", "Exibir todos os clientes", "Buscar cliente por CPF"," Finalizar"};
         String op = String.valueOf(JOptionPane.showOptionDialog(null, "MENU", "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,null, options, "1"));
-        System.out.println("selecionou" + op);
-        System.out.println("\n****Menu****");
-
         return op;
     }
 
-    private static void telaCadastro(IClienteDao dao) throws Exception {
-        System.out.println("Nome do cliente: ");
-        String nome = "S";
-        System.out.println("Endereco do cliente: ");
-        String endereco = "S";
-        System.out.println("Estado do cliente ");
-        String estado ="S";
-        System.out.println("Cidade do cliente: ");
-        String cidade = "S";
-        System.out.println("Telefone do cliente: ");
-        String telefone = "S";
-        System.out.println("CPF do cliente: ");
-        String cpf = "S";
-        dao.cadastrar(new Cliente(nome, endereco, estado, cidade, telefone, cpf));
+    private static void telaCadastro(IClienteDao dao){
+        String nome = TelaInput("Nome do cliente: ");
+        String endereco = TelaInput("Endereço do cliente: ");
+        String estado = TelaInput("Estado do cliente: ");
+        String cidade = TelaInput("Cidade do cliente: ");
+        String telefone = TelaInput("Telefone do cliente: ");
+        String cpf = TelaInput("CPF do cliente: ");
+        try {
+            dao.cadastrar(new Cliente(nome, endereco, estado, cidade, telefone, cpf));
+        }catch (Exception e){
+            telaErro("Erro ao cadastrar o cliente");
+        }
     }
 
-    private static void telaExibirTodos(IClienteDao dao) throws Exception {
-        if (dao.length() > 0) {
-            for (Cliente c: dao.buscarTodos()){
-                System.out.println(c);
+    private static String TelaInput(String inputMessage) {
+        return JOptionPane.showInputDialog(null, inputMessage);
+    }
+
+    private static void telaErro(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private static void telaExibirTodos(IClienteDao dao) {
+        try {
+            List<Cliente> listaDeClientes = new ArrayList<>();
+            System.out.println(dao.length());
+            if (1 > 0) {
+                listaDeClientes.addAll(dao.buscarTodos());
+                System.out.println("\n");
             }
-            System.out.println("\n");
-        }
-        else {
-            System.out.println("\nNão há clientes cadastrados!");
+            else {
+                System.out.println("\nNão há clientes cadastrados!");
+            }
+
+            JOptionPane.showMessageDialog(null, listaDeClientes.toString(), "erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            telaErro("Erro ao exibir clientes");
         }
 
     }
