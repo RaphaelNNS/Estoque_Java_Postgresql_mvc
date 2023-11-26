@@ -271,7 +271,7 @@ public class ClienteDaoDB implements IClienteDao {
         PreparedStatement stm = null;
         ResultSet resultSet = null;
         try {
-            ConnectionFactory.getConnection();
+            connection = ConnectionFactory.getConnection();
             String sql = getCountSql();
             stm = connection.prepareStatement(sql);
             resultSet = stm.executeQuery();
