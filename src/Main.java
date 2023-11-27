@@ -13,24 +13,23 @@ public class Main {
         do {
             op = exibirMenu();
             switch (op) {
-                case "0":{
+                case "0" -> {
                     telaCadastro(dao);
                     break;
                 }
-                case "1":{
+                case "1" -> {
                     telaExibirTodos(dao);
                     break;
                 }
-                case "2":{
+                case "2" -> {
                     telaBuscarClienteCpf(dao);
                     break;
                 }
-                case "3":
-                case "-1": {
+                case "3", "-1" -> {
                     System.out.println("\nEncerrando o programa...");
                     break;
                 }
-                default:{
+                default -> {
                     System.out.println("\nCRIAR POP UP DE ERRO!");
                     break;
                 }
@@ -177,17 +176,4 @@ public class Main {
             telaErro("Erro ao atulizar");
         }
     }
-
-    private static void exibirMenuModificacao() {
-        System.out.println("Qual atributo deseja modificar do cliente?");
-        System.out.println("1 - nome\n2 - endereco\n3 - cidade\n4 - estado\n5 - telefone\n6 - CPF\n                  7 - salvar");
-    }
-
-    private static void exibirMenuCliente() {
-        System.out.println("\n**** MenuCliente ****");
-        System.out.println("\n1- Modificar dados");
-        System.out.println("\n2- Excluir cliente");
-        System.out.println("\n3- Voltar");
-    }
-
 }
