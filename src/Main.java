@@ -1,129 +1,136 @@
 import dao.ClienteDaoDB;
-import dao.ClienteDaoList;
 import dao.IClienteDao;
 import domain.Cliente;
 
-import java.util.Scanner;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        IClienteDao dao = new ClienteDaoList();
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args){
+        IClienteDao dao = new ClienteDaoDB();
         String op;
         do {
-            exibirMenu();
-            System.out.println("\nO que deseja fazer?");
-            op = sc.nextLine();
-            sc.nextLine();
+            op = exibirMenu();
             switch (op) {
-                case "1":{
-                    telaCadastro(sc, dao);
+                case "0" -> {
+                    telaCadastro(dao);
                     break;
                 }
-                case "2":{
+                case "1" -> {
                     telaExibirTodos(dao);
                     break;
                 }
-                case "3":{
-                    telaBuscarClienteCpf(sc, dao);
+                case "2" -> {
+                    telaBuscarClienteCpf(dao);
                     break;
                 }
-                case "4":{
+                case "3", "-1" -> {
                     System.out.println("\nEncerrando o programa...");
                     break;
                 }
-                default:{
-                    System.out.println("\nOpção inválida!");
+                default -> {
+                    System.out.println("\nCRIAR POP UP DE ERRO!");
                     break;
                 }
             }
-        }while(!op.equals("4"));
-
+        }while(!op.equals("3") && !op.equals("-1"));
     }
 
-    public static void exibirMenu() {
-        System.out.println("\n****Menu****");
-        System.out.println("\n1- Cadastrar");
-        System.out.println("\n2- Exibir todos os clientes");
-        System.out.println("\n3- Buscar cliente por CPF");
-        System.out.println("\n4- Finalizar\n");
+    public static String exibirMenu() {
+        String[] options = {"Cadastrar", "Exibir todos os clientes", "Buscar cliente por CPF"," Finalizar"};
+        String op = String.valueOf(JOptionPane.showOptionDialog(null, "MENU", "Menu", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,null, options, "1"));
+        return op;
     }
 
-    private static void telaCadastro(Scanner sc, IClienteDao dao) throws Exception {
-        System.out.println("Nome do cliente: ");
-        String nome = sc.nextLine();
-        sc.nextLine();
-        System.out.println("Endereço do cliente: ");
-        String endereco = sc.nextLine();
-        sc.nextLine();
-        System.out.println("Estado do cliente ");
-        String estado = sc.nextLine();
-        sc.nextLine();
-        System.out.println("Cidade do cliente: ");
-        String cidade = sc.nextLine();
-        sc.nextLine();
-        System.out.println("Telefone do cliente: ");
-        String telefone = sc.nextLine();
-        sc.nextLine();
-        System.out.println("CPF do cliente: ");
-        String cpf = sc.nextLine();
-        sc.nextLine();
-        dao.cadastrar(new Cliente(nome, endereco, estado, cidade, telefone, cpf));
+    public static String telaEscolha(String message, String title, String[] options){
+         return String.valueOf(JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,null, options, "1"));
     }
 
-    private static void telaExibirTodos(IClienteDao dao) throws Exception {
-        if (dao.length() > 0) {
-            for (Cliente c: dao.buscarTodos()){
-                System.out.println(c);
+    private static void telaCadastro(IClienteDao dao){
+        String nome = telaInput("Nome do cliente: ", null);
+        String endereco = telaInput("Endereço do cliente: ", null);
+        String estado = telaInput("Estado do cliente: ", null);
+        String cidade = telaInput("Cidade do cliente: ", null);
+        String telefone = telaInput("Telefone do cliente: ", null);
+        String cpf = telaInput("CPF do cliente: ", null);
+        try {
+            dao.cadastrar(new Cliente(nome, endereco, estado, cidade, telefone, cpf));
+        }catch (Exception e){
+            telaErro("Erro ao cadastrar o cliente");
+        }
+    }
+
+    private static String telaInput(String inputMessage, String initialString) {
+        return String.valueOf(JOptionPane.showInputDialog(null, inputMessage, initialString));
+    }
+
+    private static void telaErro(String errorMessage) {
+        JOptionPane.showMessageDialog(null, errorMessage, "erro", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private static void telaExibirTodos(IClienteDao dao) {
+        try {
+            List<Cliente> listaDeClientes = new ArrayList<>();
+            String listaFormatada = "";
+            if (dao.length() > 0) {
+                for (Cliente c: dao.buscarTodos()) {
+                    listaFormatada = listaFormatada + c.toString();
+                }
+                JOptionPane.showMessageDialog(null, listaFormatada, "erro", JOptionPane.ERROR_MESSAGE);
             }
-            System.out.println("\n");
-        }
-        else {
-            System.out.println("\nNão há clientes cadastrados!");
+            else {
+                telaErro("Não há clientes cadastrados");
+            }
+        } catch (Exception e) {
+            telaErro("Erro ao exibir clientes");
         }
 
     }
 
-    private static void telaBuscarClienteCpf(Scanner sc, IClienteDao dao) throws Exception {
-        System.out.println("Digite o CPF: ");
-        String codigo = sc.nextLine();
-        sc.nextLine();
-        Cliente cliente = dao.buscar(codigo);
-        if(cliente != null){
-            telaCliente(sc, dao, cliente);
-            System.out.println(cliente);
-        }else System.out.println("Nao ha clientes registrados com este CPF");
+    private static void telaBuscarClienteCpf( IClienteDao dao){
+        try {
+            String codigo = telaInput("Digite o CPF: ", null);
+            Cliente cliente = dao.buscar(codigo);
+            if(cliente != null){
+                telaCliente(dao, cliente);
+                System.out.println(cliente);
+            }else telaErro("Nao ha clientes registrados com este CPF");
+        }catch (Exception e){
+            telaErro("Erro ao exibir cliente");
+        }
+
     }
 
-    private static void telaCliente(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+    private static void telaCliente(IClienteDao dao, Cliente cliente){
         String op = null;
+        String[] option = {"modificar dados", "excluir cliente", "voltar"};
         do {
-            exibirMenuCliente();
-            System.out.println(cliente);
-            op = sc.nextLine();
-            sc.nextLine();
-            switch (op) {
-                case "1":
-                    telaModificarDados(sc, dao, cliente);
-                    break;
-                case "2":
-                    telaExcluirClientes(sc, dao, cliente);
-                    break;
-                case "3":
-                    break;
-                default:
-                    System.out.println("Opção inválida");
+            try{
+                op = telaEscolha(cliente.toString(), "Menu cliente", option);
+                switch (op) {
+                    case "0":
+                        telaModificarDados(dao, cliente);
+                        break;
+                    case "1":
+                        telaExcluirClientes(dao, cliente);
+                        break;
+                    case "2":
+                        return;
+                    default:
+                        System.out.println("Opção inválida");
+                }
+            }catch (Exception e){
+                telaErro("Erro em Menu de cliente");
             }
-
         }while (!op.equals("3"));
     }
 
-    private static void telaExcluirClientes(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+    private static void telaExcluirClientes(IClienteDao dao, Cliente cliente) throws Exception {
         String op = null;
         System.out.println(("Tem certeza que quer exlcuir este cliente?").toUpperCase());
         System.out.println("[1 - SIM / 2 - NAO]");
-        op = sc.nextLine();
-        sc.nextLine();
+        op = "S";
         if (op.equals("1")) {
             dao.excluir(cliente);
             return;
@@ -131,65 +138,42 @@ public class Main {
         else System.out.println("EXCLUSAO CANCELADA");
     }
 
-    private static void telaModificarDados(Scanner sc, IClienteDao dao, Cliente cliente) throws Exception {
+    private static void telaModificarDados(IClienteDao dao, Cliente cliente){
         String op;
+        String[] options = {"nome", "endereço", "cidade", "estado", "telefone", "CPF", "ATUALIZAR"};
         do {
-            exibirMenuModificacao();
-            op = sc.nextLine();
-            sc.nextLine();
+            op = telaEscolha(null, "MENU ATUALIZAR", options);
             switch (op) {
+                case "0":
+                    cliente.setNome(telaInput("nome: ", cliente.getNome()));
+                    break;
                 case "1":
-                    System.out.println("Digite o nome do cliente: ");
-                    cliente.setNome(sc.nextLine());
-                    sc.nextLine();
+                    cliente.setEndereco(telaInput("endereco: ", cliente.getEndereco()));
                     break;
                 case "2":
-                    System.out.println("Digite o endereco do cliente: ");
-                    cliente.setEndereco(sc.nextLine());
-                    sc.nextLine();
+                    cliente.setCidade(telaInput("cidade: ", cliente.getCidade()));
                     break;
                 case "3":
-                    System.out.println("Digite a cidade do cliente: ");
-                    cliente.setCidade(sc.nextLine());
-                    sc.nextLine();
+                    cliente.setEstado(telaInput("estado: ", cliente.getEstado()));
                     break;
                 case "4":
-                    System.out.println("Digite o estado do cliente: ");
-                    cliente.setEstado(sc.nextLine());
-                    sc.nextLine();
+                    cliente.setTelefone(telaInput("telefone: ", cliente.getTelefone()));
                     break;
                 case "5":
-                    System.out.println("Digite o telefone do cliente: ");
-                    cliente.setTelefone(sc.nextLine());
-                    sc.nextLine();
+                    cliente.setCpf(telaInput("CPF: ", cliente.getCpf()));
                     break;
                 case "6":
-                    System.out.println("Digite o CPF do cliente: ");
-                    cliente.setCpf(sc.nextLine());
-                    sc.nextLine();
-                    break;
-                case "7":
-                    System.out.println("Dados do cliente foram atualizados");
+                    JOptionPane.showMessageDialog(null, "Os dados dos clientes foram atualizados!");
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    telaErro("Opção invalida");
             }
-        } while (!op.equals("7"));
+        } while (!op.equals("6"));
 
-
-        dao.atualizar(cliente);
+        try {
+            dao.atualizar(cliente);
+        }catch (Exception e){
+            telaErro("Erro ao atulizar");
+        }
     }
-
-    private static void exibirMenuModificacao() {
-        System.out.println("Qual atributo deseja modificar do cliente?");
-        System.out.println("1 - nome\n2 - endereco\n3 - cidade\n4 - estado\n5 - telefone\n6 - CPF\n                  7 - salvar");
-    }
-
-    private static void exibirMenuCliente() {
-        System.out.println("\n**** MenuCliente ****");
-        System.out.println("\n1- Modificar dados");
-        System.out.println("\n2- Excluir cliente");
-        System.out.println("\n3- Voltar");
-    }
-
 }

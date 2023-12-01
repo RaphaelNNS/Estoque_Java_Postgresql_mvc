@@ -267,6 +267,27 @@ public class ClienteDaoDB implements IClienteDao {
 
     @Override
     public Integer length() {
-        return 1;
+        Connection connection = null;
+        PreparedStatement stm = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionFactory.getConnection();
+            String sql = getCountSql();
+            stm = connection.prepareStatement(sql);
+            resultSet = stm.executeQuery();
+            resultSet.next();
+            Integer count = resultSet.getInt("count");
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+          closeConnection(connection, stm, resultSet);
+        }
+    }
+
+    private String getCountSql() {
+        StringBuilder sb =  new StringBuilder();
+        sb.append("SELECT count(*) FROM tb_clientes ;");
+        return sb.toString();
     }
 }

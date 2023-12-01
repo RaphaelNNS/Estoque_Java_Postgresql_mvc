@@ -86,7 +86,7 @@ public class Cliente {
     }
 
     public String toString() {
-        return "\nNome : "+this.nome+
+        return "Nome : "+this.nome+
                 "\nEndereço: "+this.endereco+
                 "\nCidade: "+this.cidade+
                 "\nEstado: "+this.estado+
