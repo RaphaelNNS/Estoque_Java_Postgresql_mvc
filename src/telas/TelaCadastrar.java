@@ -1,12 +1,11 @@
 package telas;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
+
+import dao.ClienteDaoDB;
+import domain.Cliente;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -19,13 +18,17 @@ import java.awt.Color;
 
 public class TelaCadastrar extends JFrame {
 
-	private JFrame frmTelaDeCadastro;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1709472254445104887L;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	ClienteDaoDB dao = new ClienteDaoDB();
 
 
 	/**
@@ -41,7 +44,7 @@ public class TelaCadastrar extends JFrame {
 	private void initialize() {
 		this.setTitle("Tela de cadastro de clientes");
 		this.setBounds(100, 100, 450, 555);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(null);
 		
 		JLabel lblNome = new JLabel("Nome: ");
@@ -108,9 +111,7 @@ public class TelaCadastrar extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cadastrarCliente();
-			}
-
-			
+			}			
 		});
 		
 		
@@ -122,6 +123,7 @@ public class TelaCadastrar extends JFrame {
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				abrirLogin();
 			}
 		});
 		btnVoltar.setBounds(10, 457, 414, 29);
@@ -131,6 +133,12 @@ public class TelaCadastrar extends JFrame {
 		lblNewLabel.setForeground(new Color(255, 0, 0));
 		lblNewLabel.setBounds(10, 491, 414, 14);
 		this.getContentPane().add(lblNewLabel);
+	}
+	
+	private void abrirLogin() {
+		 TelaLogin telaLogin = new TelaLogin();
+         telaLogin.setVisible(true);
+         setVisible(false);
 	}
 	
 	
@@ -149,9 +157,17 @@ public class TelaCadastrar extends JFrame {
 		if(!(nome.isEmpty()) && !(endereco.isEmpty()) &&
 				!(cidade.isEmpty()) && !(estado.isEmpty()) &&
 				!(telefone.isEmpty()) &&!(cpf.isEmpty())) {
-			telaErro(nome);
+			Cliente novoCliente  = new Cliente(nome, endereco, cidade, estado, telefone, cpf);
+			try {
+				dao.cadastrar(novoCliente);
+			} catch (Exception e) {
+				telaErro("Erro ao cadastrar o cliente");
+	            throw new RuntimeException(e);
+			}
+			
 		}else {
 			telaErro("Preencha todos os campos");
+			
 		}
 	}
 }

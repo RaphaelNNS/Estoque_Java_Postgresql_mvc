@@ -14,9 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 
-public class TelaLogin {
+public class TelaLogin extends JFrame {
 
-	private JFrame frame;
 	private JTextField textField;
 	private JLabel lblSenha;
 	private JTextField textField_1;
@@ -30,7 +29,7 @@ public class TelaLogin {
 			public void run() {
 				try {
 					TelaLogin window = new TelaLogin();
-					window.frame.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -51,42 +50,41 @@ public class TelaLogin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		this.setBounds(100, 100, 450, 300);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Usuário: ");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblNewLabel.setBounds(10, 10, 70, 29);
-		frame.getContentPane().add(lblNewLabel);
+		this.getContentPane().add(lblNewLabel);
 		
 		textField = new JTextField();
 		textField.setBounds(10, 42, 416, 19);
-		frame.getContentPane().add(textField);
+		this.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		lblSenha = new JLabel("Senha: ");
 		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSenha.setBounds(10, 71, 70, 29);
-		frame.getContentPane().add(lblSenha);
+		this.getContentPane().add(lblSenha);
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
 		textField_1.setBounds(10, 110, 416, 19);
-		frame.getContentPane().add(textField_1);
+		this.getContentPane().add(textField_1);
 		
 		panel = new JPanel();
 		panel.setBounds(10, 139, 416, 39);
-		frame.getContentPane().add(panel);
+		this.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnNewButton = new JButton("Entrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				abrirCadastro();
+				setVisible(false);
+				
 			}
 
 			
