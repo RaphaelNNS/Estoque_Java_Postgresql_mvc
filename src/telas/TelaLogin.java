@@ -43,12 +43,16 @@ public class TelaLogin {
 	 */
 	public TelaLogin() {
 		initialize();
+		
+		
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,23 +79,30 @@ public class TelaLogin {
 		frame.getContentPane().add(textField_1);
 		
 		panel = new JPanel();
-		panel.setBounds(10, 139, 416, 29);
+		panel.setBounds(10, 139, 416, 39);
 		frame.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnNewButton = new JButton("Entrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				abrirCadastro();
 			}
+
+			
 		});
 		panel.add(btnNewButton);
-		
+		 
 		JButton btnNewButton_1 = new JButton("Cadastrar-se");
 		panel.add(btnNewButton_1);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+	}
+	
+	private void abrirCadastro() {
+		 TelaCadastrar telaCadastrar = new TelaCadastrar();
+         telaCadastrar.setVisible(true);
 	}
 }
