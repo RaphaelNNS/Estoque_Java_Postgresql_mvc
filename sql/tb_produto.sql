@@ -4,7 +4,7 @@
 
 CREATE TABLE IF NOT EXISTS public.tb_produto
 (
-    id bigint NOT NULL,
+    id serial,
     codigo character varying(10) COLLATE pg_catalog."default" NOT NULL,
     nome character varying(50) COLLATE pg_catalog."default" NOT NULL,
     descricao character varying(100) COLLATE pg_catalog."default" NOT NULL,
