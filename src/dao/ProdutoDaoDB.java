@@ -2,6 +2,7 @@ package dao;
 
 import DB.ConnectionFactory;
 import domain.Cliente;
+import domain.Produto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,25 +13,29 @@ import java.util.List;
 public class ProdutoDaoDB implements IProdutoDao{
 
     @Override
-    public Integer cadastrar(Cliente cliente) throws Exception {
+    public Integer cadastrar(Produto produto) throws Exception {
         Connection connection = null;
         PreparedStatement stm = null;
         try {
             connection = ConnectionFactory.getConnection();
             String query = getSqlCadastrar();
             stm = connection.prepareStatement(query);
-            adicionarParametrosCadastrar(stm);
-            stm.executeUpdate();
+            adicionarParametrosCadastrar(stm, produto);
+            return stm.executeUpdate();
         } catch (Exception e) {
             throw e;
         } finally {
-            closeConnection(connection, stm, result);
+            closeConnection(connection, stm, null);
         }
-        return;
     }
 
-    private void adicionarParametrosCadastrar(PreparedStatement stm) {
-
+    private void adicionarParametrosCadastrar(PreparedStatement stm, Produto produto) throws SQLException {
+            stm.setString(1, produto.getCodigo());
+            stm.setString(2, produto.getNome());
+            stm.setString(3, produto.getDescricao());
+            stm.setString(4, produto.getValor());
+            stm.setString(5, produto.getValor());
+            stm.setString(6, produto.getQuantidade());
     }
 
     private String getSqlCadastrar() {
@@ -40,8 +45,10 @@ public class ProdutoDaoDB implements IProdutoDao{
         return query.toString();
     }
 
+
+
     @Override
-    public Integer atualizar(Cliente cliente) throws Exception {
+    public Integer atualizar(Produto produto) throws Exception {
         return null;
     }
 
@@ -56,7 +63,7 @@ public class ProdutoDaoDB implements IProdutoDao{
     }
 
     @Override
-    public Integer excluir(Cliente cliente) throws Exception {
+    public Integer excluir(Produto produto) throws Exception {
         return null;
     }
 
